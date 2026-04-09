@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saku Blox | Aesthetic Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Plus+Jakarta+Sans:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --soft-pink: #ffe4e9; --hot-pink: #ff8fab; --sakura: #ffb3c1;
+            --white: #ffffff; --text: #4a3035; --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe4e9 100%);
+            color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; display: flex;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 280px; background: var(--glass); backdrop-filter: blur(15px);
+            height: 100vh; position: sticky; top: 0; padding: 30px 15px;
+            border-right: 1px solid rgba(255,255,255,0.3); display: flex; flex-direction: column; overflow-y: auto;
+        }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--hot-pink); margin-bottom: 25px; padding-left: 15px; }
+        .sidebar-label { font-size: 0.75rem; font-weight: 800; color: var(--hot-pink); margin: 15px 0 5px 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .sidebar-item {
+            padding: 12px 15px; border-radius: 15px; cursor: pointer; transition: 0.3s;
+            display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--text); font-size: 0.9rem;
+        }
+        .sidebar-item:hover, .sidebar-item.active { background: var(--hot-pink); color: white; }
+
+        /* --- MAIN CONTENT --- */
+        .main-content { flex: 1; padding: 30px 6%; }
+        nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; background: var(--glass); padding: 15px 25px; border-radius: 25px; }
+
+        /* --- PRODUCT GRID --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .card {
+            background: var(--white); padding: 25px; border-radius: 30px; text-align: center;
+            transition: 0.4s; border: 1px solid rgba(255,143,171,0.1); display: flex; flex-direction: column; align-items: center;
+        }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(255,143,171,0.15); }
+        .card img { width: 75px; margin-bottom: 15px; }
+        .price { color: var(--hot-pink); font-weight: 800; font-size: 1.2rem; margin-bottom: 15px; }
+
+        /* --- INPUT CUSTOM --- */
+        .custom-input {
+            width: 100%; padding: 10px; border-radius: 12px; border: 2px solid var(--soft-pink);
+            text-align: center; font-weight: 700; margin-bottom: 10px; outline: none; font-size: 1rem;
+        }
+
+        /* --- MODALS --- */
+        .overlay {
+            position: fixed; inset: 0; background: rgba(255, 228, 233, 0.85);
+            backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; z-index: 2000;
+        }
+        .modal { background: var(--white); padding: 30px; border-radius: 40px; width: 90%; max-width: 420px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        input[type="text"], input[type="password"], select { 
+            width: 100%; padding: 15px; margin: 8px 0; border-radius: 15px; border: 2px solid var(--soft-pink); outline: none; font-weight: 600; 
+        }
+        .btn-main { background: var(--hot-pink); color: white; border: none; padding: 15px; border-radius: 20px; width: 100%; font-weight: 700; cursor: pointer; margin-top: 10px; font-size: 1rem; }
+
+        .status-prosess { background: #fef08a; color: #854d0e; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; }
+        .status-pending { background: #bbf7d0; color: #166534; padding: 4px 10px; border-radius: 8px; font-size: 0.7rem; font-weight: bold; }
+
+        @media (max-width: 768px) { .sidebar { width: 80px; padding: 20px 10px; } .sidebar-item span, .sidebar-label, .logo { display: none; } }
+    </style>
+</head>
+<body>
+
+<aside class="sidebar">
+    <div class="logo">sakublox.</div>
+    <div class="sidebar-label">Utama</div>
+    <div class="sidebar-item active" onclick="switchGame('roblox')"><i class="fas fa-cube"></i> <span>Roblox Topup</span></div>
+    <div class="sidebar-item" onclick="switchGame('ml')"><i class="fas fa-mobile-alt"></i> <span>Mobile Legends</span></div>
+    <div class="sidebar-label">Game (WA)</div>
+    <div class="sidebar-item" onclick="hubungiAdmin('Free Fire')"><i class="fas fa-fire"></i> <span>Free Fire</span></div>
+    <div class="sidebar-item" onclick="hubungiAdmin('Honor of Kings')"><i class="fas fa-shield-alt"></i> <span>Honor of Kings</span></div>
+    <div class="sidebar-item" onclick="hubungiAdmin('Magic Chess')"><i class="fas fa-chess-board"></i> <span>Magic Chess</span></div>
+    <div class="sidebar-item" onclick="hubungiAdmin('Valorant')"><i class="fas fa-crosshairs"></i> <span>Valorant</span></div>
+    <div class="sidebar-label">Sistem</div>
+    <div class="sidebar-item" onclick="bukaCekPesanan()"><i class="fas fa-search"></i> <span>Cek Pesanan</span></div>
+    <div class="sidebar-item" onclick="bukaAdmin()"><i class="fas fa-fingerprint"></i> <span>Admin</span></div>
+</aside>
+
+<main class="main-content">
+    <nav>
+        <div id="game-title" style="font-weight: 800; font-size: 1.2rem; color: var(--hot-pink);">Roblox Topup</div>
+        <div class="nav-right" style="color: var(--hot-pink); font-weight: 700;">
+            <i class="fas fa-shopping-bag"></i> <span id="cart-count">0</span>
+        </div>
+    </nav>
+    <div class="grid" id="product-grid"></div>
+</main>
+
+<div id="modal-cart" class="overlay">
+    <div class="modal">
+        <h2 style="margin-bottom: 10px;">Lengkapi Data</h2>
+        <div id="isi-keranjang" style="margin-bottom: 15px; font-weight: 700; color: var(--hot-pink);"></div>
+        <div id="form-roblox"><input type="text" id="user-roblox" placeholder="Username Roblox"></div>
+        <div id="form-ml" style="display:none">
+            <input type="text" id="user-ml" placeholder="User ID">
+            <input type="text" id="zone-ml" placeholder="Zone ID">
+        </div>
+        <select id="metode">
+            <option value="QRIS">Bayar via QRIS</option>
+            <option value="COD">Bayar via COD</option>
+        </select>
+        <button class="btn-main" onclick="checkout()">Checkout Sekarang</button>
+        <p onclick="tutupModal()" style="text-align:center; margin-top:15px; cursor:pointer; font-weight:700; opacity:0.5">Batal</p>
+    </div>
+</div>
+
+<div id="modal-admin" class="overlay"><div class="modal"><h2>Admin</h2><div id="admin-login"><input type="password" id="admin-pw" placeholder="Pin"><button class="btn-main" onclick="loginAdmin()">Masuk</button></div><div id="admin-panel" style="display:none; max-height:400px; overflow-y:auto"><div id="list-admin"></div></div><p onclick="tutupModal()" style="text-align:center; margin-top:15px; cursor:pointer">Tutup</p></div></div>
+<div id="modal-cek" class="overlay"><div class="modal"><h2>Cek Pesanan</h2><input type="text" id="cek-input" placeholder="ID/User"><button class="btn-main" onclick="prosesCek()">Cari</button><div id="hasil-cek" style="margin-top:20px"></div><p onclick="tutupModal()" style="text-align:center; margin-top:15px; cursor:pointer">Tutup</p></div></div>
+
+<script>
+    const fee = 1000;
+    const hargaPerRobux = 120; // Rp6.000 / 50 rbx = Rp120 per rbx
+    const adminWA = "085185308010";
+    
+    const dataGame = {
+        roblox: [
+            { id: 'custom', nama: 'Pilih Jumlah Robux', harga: 0 },
+            { id: 'r1', nama: '100 Robux', harga: (100 * hargaPerRobux) + fee },
+            { id: 'r2', nama: '400 Robux', harga: (400 * hargaPerRobux) + fee },
+            { id: 'r3', nama: '800 Robux', harga: (800 * hargaPerRobux) + fee },
+            { id: 'r4', nama: '1700 Robux', harga: (1700 * hargaPerRobux) + fee }
+        ],
+        ml: [
+            { id: 'm1', nama: '3 Diamonds', harga: 1000 + fee },
+            { id: 'm2', nama: '5 Diamonds', harga: 2000 + fee },
+            { id: 'm3', nama: '12 Diamonds', harga: 4000 + fee },
+            { id: 'm4', nama: '59 Diamonds', harga: 16000 + fee },
+            { id: 'm5', nama: '110 Diamonds', harga: 29000 + fee },
+            { id: 'm6', nama: '277 Diamonds', harga: 75000 + fee },
+            { id: 'm7', nama: '568 Diamonds', harga: 142000 + fee }
+        ]
+    };
+
+    let currentGame = 'roblox';
+    let keranjang = null;
+    let database = JSON.parse(localStorage.getItem('sakublox_db')) || [];
+
+    function renderProducts() {
+        const grid = document.getElementById('product-grid');
+        grid.innerHTML = "";
+        dataGame[currentGame].forEach(p => {
+            if (p.id === 'custom' && currentGame === 'roblox') {
+                grid.innerHTML += `
+                    <div class="card" style="border: 2px solid var(--hot-pink)">
+                        <img src="https://files.catbox.moe/f0r9v0.png">
+                        <h3>Custom Amount</h3>
+                        <input type="number" id="custom-amt" class="custom-input" placeholder="Masukkan Jumlah" oninput="updateCustomPrice(this.value)">
+                        <div class="price" id="custom-price-display">Rp0</div>
+                        <button class="btn-main" onclick="pilihCustomRobux()">Beli Sekarang</button>
+                    </div>`;
+            } else {
+                grid.innerHTML += `
+                    <div class="card">
+                        <img src="${currentGame === 'roblox' ? 'https://files.catbox.moe/f0r9v0.png' : 'https://cdn-icons-png.flaticon.com/512/3612/3612668.png'}">
+                        <h3>${p.nama}</h3>
+                        <div class="price">Rp${p.harga.toLocaleString()}</div>
+                        <button class="btn-main" onclick="pilihItem('${p.id}')">Beli Sekarang</button>
+                    </div>`;
+            }
+        });
+    }
+
+    function updateCustomPrice(val) {
+        // Hitung harga: (Jumlah * 120) + 2000
+        const total = (val * hargaPerRobux) + fee;
+        document.getElementById('custom-price-display').innerText = val > 0 ? "Rp" + total.toLocaleString() : "Rp0";
+    }
+
+    function pilihCustomRobux() {
+        const amt = document.getElementById('custom-amt').value;
+        if (amt < 1) return alert("Masukkan jumlah Robux!");
+        keranjang = { 
+            nama: amt + " Robux", 
+            harga: (amt * hargaPerRobux) + fee 
+        };
+        tampilkanModalCheckout();
+    }
+
+    function pilihItem(id) {
+        keranjang = dataGame[currentGame].find(x => x.id === id);
+        tampilkanModalCheckout();
+    }
+
+    function tampilkanModalCheckout() {
+        document.getElementById('isi-keranjang').innerText = `${keranjang.nama} (Total: Rp${keranjang.harga.toLocaleString()})`;
+        document.getElementById('form-roblox').style.display = (currentGame === 'roblox') ? 'block' : 'none';
+        document.getElementById('form-ml').style.display = (currentGame === 'ml') ? 'block' : 'none';
+        document.getElementById('modal-cart').style.display = 'flex';
+    }
+
+    function checkout() {
+        const user = (currentGame === 'roblox') ? document.getElementById('user-roblox').value : document.getElementById('user-ml').value + " (" + document.getElementById('zone-ml').value + ")";
+        const metode = document.getElementById('metode').value;
+        if(!user || user.trim() === "" || user.includes("()")) return alert("Data tidak lengkap!");
+
+        const orderId = "SBX-" + Math.floor(Math.random()*9999);
+        database.push({ id: orderId, user, item: keranjang.nama, status: 'prosess', harga: keranjang.harga });
+        localStorage.setItem('sakublox_db', JSON.stringify(database));
+
+        const text = `Halo Saku Blox!%0AOrder ID: ${orderId}%0AData: ${user}%0AItem: ${keranjang.nama}%0AMetode: ${metode}%0ATotal: Rp${keranjang.harga.toLocaleString()}`;
+        window.location.href = `https://wa.me/${adminWA}?text=${text}`;
+    }
+
+    function switchGame(game) {
+        currentGame = game;
+        document.getElementById('game-title').innerText = (game === 'ml' ? 'Mobile Legends' : 'Roblox Topup');
+        document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+        renderProducts();
+    }
+
+    function hubungiAdmin(perihal) { window.location.href = `https://wa.me/${adminWA}?text=Halo Saku Blox, mau beli ${perihal}`; }
+    function loginAdmin() { if(document.getElementById('admin-pw').value === "123445") { document.getElementById('admin-login').style.display = 'none'; document.getElementById('admin-panel').style.display = 'block'; renderAdmin(); } }
+    function renderAdmin() {
+        const list = document.getElementById('list-admin'); list.innerHTML = "";
+        database.forEach((p, idx) => { list.innerHTML += `<div style="background:#fff5f7; padding:10px; border-radius:10px; margin-bottom:5px"><b>${p.user}</b> [${p.id}]<br>${p.item}<br><select onchange="updateStatus(${idx}, this.value)"><option value="prosess" ${p.status==='prosess'?'selected':''}>Prosess</option><option value="pending" ${p.status==='pending'?'selected':''}>Pending</option><option value="done">Hapus</option></select></div>`; });
+    }
+    function updateStatus(idx, val) { if(val === "done") database.splice(idx, 1); else database[idx].status = val; localStorage.setItem('sakublox_db', JSON.stringify(database)); renderAdmin(); }
+    function prosesCek() {
+        const inp = document.getElementById('cek-input').value.toLowerCase();
+        const res = database.filter(p => p.id.toLowerCase().includes(inp) || p.user.toLowerCase().includes(inp));
+        const div = document.getElementById('hasil-cek'); div.innerHTML = res.length ? "" : "Tidak ditemukan.";
+        res.forEach(p => { div.innerHTML += `<div style="background:#fff5f7; padding:10px; border-radius:10px; margin-bottom:5px">ID: ${p.id} <br>Status: <span class="status-${p.status}">${p.status.toUpperCase()}</span></div>`; });
+    }
+    function bukaAdmin() { document.getElementById('modal-admin').style.display = 'flex'; }
+    function bukaCekPesanan() { document.getElementById('modal-cek').style.display = 'flex'; }
+    function tutupModal() { document.querySelectorAll('.overlay').forEach(o => o.style.display = 'none'); }
+    renderProducts();
+</script>
+</body>
+</html>
